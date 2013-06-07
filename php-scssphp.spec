@@ -1,8 +1,7 @@
 %global github_owner   leafo
 %global github_name    scssphp
-%global github_version 0.0.5
-%global github_commit  dd4e4cdc8295b0897b9fe8b1b580561b8174ad35
-%global github_date    20130311
+%global github_version 0.0.7
+%global github_commit  e5a79218c349cbc03dc99004fbad938c7b82391f
 
 %global php_min_ver    5.3.0
 
@@ -85,6 +84,9 @@ install -p -m 644 pscss.1 %{buildroot}%{_mandir}/man1/
 
 
 %changelog
+* Fri Jun 07 2013 Shawn Iwinski <shawn.iwinski@gmail.com> 0.0.7-1
+- Updated to 0.0.7
+
 * Sat Mar 16 2013 Shawn Iwinski <shawn.iwinski@gmail.com> 0.0.5-1
 - Updated to version 0.0.5
 - php-cli => php(language)
