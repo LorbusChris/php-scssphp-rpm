@@ -1,6 +1,6 @@
 %global github_owner    leafo
 %global github_name     scssphp
-%global github_version  0.10.0
+%global github_version  0.0.10
 %global github_commit   558357feceb9b932a192966945904414dc372e4d
 
 # "php": ">=5.3.0"
