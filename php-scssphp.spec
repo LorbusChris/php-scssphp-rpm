@@ -1,7 +1,7 @@
 %global github_owner    leafo
 %global github_name     scssphp
-%global github_version  0.0.9
-%global github_commit   a06d702ebf9fabb22542bbb27cc12a905813bb6d
+%global github_version  0.10.0
+%global github_commit   558357feceb9b932a192966945904414dc372e4d
 
 # "php": ">=5.3.0"
 %global php_min_ver     5.3.0
@@ -25,13 +25,13 @@ BuildRequires: help2man
 BuildRequires: php(language) >= %{php_min_ver}
 BuildRequires: php-pear(pear.phpunit.de/PHPUnit) >= %{phpunit_min_ver}
 BuildRequires: php-pear(pear.phpunit.de/PHPUnit) <  %{phpunit_max_ver}
-# For tests: phpcompatinfo (computed from v0.0.9)
+# For tests: phpcompatinfo (computed from v0.0.10)
 BuildRequires: php-ctype
 BuildRequires: php-date
 BuildRequires: php-pcre
 
 Requires:      php(language) >= %{php_min_ver}
-# phpcompatinfo (computed from v0.0.9)
+# phpcompatinfo (computed from v0.0.10)
 Requires:      php-ctype
 Requires:      php-date
 Requires:      php-pcre
@@ -78,6 +78,11 @@ install -pm 644 pscss.1 %{buildroot}%{_mandir}/man1/
 
 
 %check
+# Create PHPUnit config w/ colors turned off
+cat phpunit.xml.dist \
+    | sed 's/colors\s*=\s*"true"/colors="false"/' \
+    > phpunit.xml
+
 %{_bindir}/phpunit tests
 
 
@@ -89,29 +94,32 @@ install -pm 644 pscss.1 %{buildroot}%{_mandir}/man1/
 
 
 %changelog
-* Sun Dec 29 2013 Shawn Iwinski <shawn.iwinski@gmail.com> 0.0.9-1
+* Mon Apr 21 2014 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.0.10-1
+- Updated to 0.0.10 (BZ #1087738)
+
+* Sun Dec 29 2013 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.0.9-1
 - Updated to 0.0.9 (BZ #1046671)
 - Spec cleanup
 
-* Fri Nov 15 2013 Shawn Iwinski <shawn.iwinski@gmail.com> 0.0.8-1
-- Updated to 0.0.8
+* Fri Nov 15 2013 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.0.8-1
+- Updated to 0.0.8 (BZ #1009564)
 
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.0.7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
-* Fri Jun 07 2013 Shawn Iwinski <shawn.iwinski@gmail.com> 0.0.7-1
-- Updated to 0.0.7
+* Fri Jun 07 2013 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.0.7-1
+- Updated to 0.0.7 (BZ #967834)
 
-* Sat Mar 16 2013 Shawn Iwinski <shawn.iwinski@gmail.com> 0.0.5-1
+* Sat Mar 16 2013 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.0.5-1
 - Updated to version 0.0.5
 - php-cli => php(language)
 - %%{__php} => %%{_bindir}/php
 
-* Sat Mar 09 2013 Shawn Iwinski <shawn.iwinski@gmail.com> 0.0.4-2.20130301git3463d7d
+* Sat Mar 09 2013 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.0.4-2.20130301git3463d7d
 - Updated to latest snapshot
 - php-common => php-cli
 - Added man page
 - Removed tests from package
 
-* Tue Nov 27 2012 Shawn Iwinski <shawn.iwinski@gmail.com> 0.0.4-1
+* Tue Nov 27 2012 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.0.4-1
 - Initial package
