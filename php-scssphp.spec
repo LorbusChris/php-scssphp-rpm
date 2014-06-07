@@ -11,7 +11,7 @@
 
 Name:          php-%{github_name}
 Version:       %{github_version}
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       A compiler for SCSS written in PHP
 
 Group:         Development/Libraries
@@ -94,6 +94,9 @@ cat phpunit.xml.dist \
 
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.0.10-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Mon Apr 21 2014 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.0.10-1
 - Updated to 0.0.10 (BZ #1087738)
 
