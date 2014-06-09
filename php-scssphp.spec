@@ -6,8 +6,8 @@
 # "php": ">=5.3.0"
 %global php_min_ver     5.3.0
 # "phpunit/phpunit": "3.7.*"
+#    max version ignored
 %global phpunit_min_ver 3.7.0
-%global phpunit_max_ver 3.8.0
 
 Name:          php-%{github_name}
 Version:       %{github_version}
@@ -23,8 +23,7 @@ BuildArch:     noarch
 BuildRequires: help2man
 # For tests
 BuildRequires: php(language) >= %{php_min_ver}
-BuildRequires: php-pear(pear.phpunit.de/PHPUnit) >= %{phpunit_min_ver}
-BuildRequires: php-pear(pear.phpunit.de/PHPUnit) <  %{phpunit_max_ver}
+BuildRequires: php-phpunit-PHPUnit >= %{phpunit_min_ver}
 # For tests: phpcompatinfo (computed from v0.0.10)
 BuildRequires: php-ctype
 BuildRequires: php-date
@@ -35,6 +34,9 @@ Requires:      php(language) >= %{php_min_ver}
 Requires:      php-ctype
 Requires:      php-date
 Requires:      php-pcre
+
+Provides:      php-composer(leafo/scssphp) = %{github_version}
+
 
 %description
 SCSS (http://sass-lang.com/) is a CSS preprocessor that adds many features like
@@ -94,6 +96,10 @@ cat phpunit.xml.dist \
 
 
 %changelog
+* Mon Jun  8 2014 Remi Collet <remi@fedoraproject.org> - 0.0.10-2
+- fix FTBFS, ignore max version of PHPUnit
+- provides php-composer(leafo/scssphp)
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.0.10-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
