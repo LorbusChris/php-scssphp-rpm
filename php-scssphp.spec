@@ -1,7 +1,7 @@
 #
 # RPM spec file for php-scssphp
 #
-# Copyright (c) 2012-2014 Shawn Iwinski <shawn.iwinski@gmail.com>
+# Copyright (c) 2012-2015 Shawn Iwinski <shawn.iwinski@gmail.com>
 #                         Remi Collet <remi@fedoraproject.org>
 #
 # License: MIT
@@ -29,7 +29,7 @@
 
 Name:          php-%{github_name}
 Version:       %{github_version}
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       A compiler for SCSS written in PHP
 
 Group:         Development/Libraries
@@ -125,6 +125,9 @@ sed 's/colors\s*=\s*"true"/colors="false"/' phpunit.xml.dist > phpunit.xml
 
 
 %changelog
+* Fri Jan 02 2015 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.1.1-2
+- Bump release for Koji/Bodhi
+
 * Thu Oct 30 2014 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.1.1-1
 - Updated to 0.1.1 (BZ #1126612)
 - Removed man page
