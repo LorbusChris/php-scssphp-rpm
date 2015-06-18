@@ -29,7 +29,7 @@
 
 Name:          php-%{github_name}
 Version:       %{github_version}
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       A compiler for SCSS written in PHP
 
 Group:         Development/Libraries
@@ -125,6 +125,9 @@ sed 's/colors\s*=\s*"true"/colors="false"/' phpunit.xml.dist > phpunit.xml
 
 
 %changelog
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Fri Jan 02 2015 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.1.1-2
 - Bump release for Koji/Bodhi
 
