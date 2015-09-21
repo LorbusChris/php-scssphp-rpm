@@ -176,7 +176,7 @@ install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 
 
 %changelog
-* Sat Sep 20 2015 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.3.1-1
+* Sun Sep 20 2015 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.3.1-1
 - Updated to 0.3.1 (RHBZ #1256168)
 - Updated URL
 - Added standard "php-{COMPOSER_VENDOR}-{COMPOSER_PROJECT}" naming provides
