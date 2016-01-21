@@ -1,7 +1,7 @@
 #
 # Fedora spec file for php-scssphp
 #
-# Copyright (c) 2012-2015 Shawn Iwinski <shawn.iwinski@gmail.com>
+# Copyright (c) 2012-2016 Shawn Iwinski <shawn.iwinski@gmail.com>
 #                         Remi Collet <remi@fedoraproject.org>
 #
 # License: MIT
@@ -12,8 +12,8 @@
 
 %global github_owner     leafo
 %global github_name      scssphp
-%global github_version   0.3.2
-%global github_commit    033dd027dfc8e1905ce782a687160d66d3bd65ee
+%global github_version   0.4.0
+%global github_commit    78a6f27aa4eaf70bb3ff4d13b639bab71fdaf47a
 
 %global composer_vendor  leafo
 %global composer_project scssphp
@@ -51,10 +51,9 @@ BuildRequires: php-cli
 ## composer.json
 BuildRequires: php(language) >= %{php_min_ver}
 BuildRequires: php-composer(phpunit/phpunit)
-## phpcompatinfo (computed from version 0.3.2)
+## phpcompatinfo (computed from version 0.4.0)
 BuildRequires: php-ctype
 BuildRequires: php-date
-BuildRequires: php-json
 BuildRequires: php-mbstring
 BuildRequires: php-pcre
 ## Autoloader
@@ -64,17 +63,16 @@ BuildRequires: php-composer(symfony/class-loader)
 Requires:      php-cli
 # composer.json
 Requires:      php(language) >= %{php_min_ver}
-# phpcompatinfo (computed from version 0.3.2)
+# phpcompatinfo (computed from version 0.4.0)
 Requires:      php-ctype
 Requires:      php-date
-Requires:      php-json
 Requires:      php-mbstring
 Requires:      php-pcre
 # Autoloader
 Requires:      php-composer(symfony/class-loader)
 
 # Standard "php-{COMPOSER_VENDOR}-{COMPOSER_PROJECT}" naming
-Provides:      php-%{composer_vendor}-%{composer_project} = %{version}-%{release}
+Provides:      php-%{composer_vendor}-%{composer_project}           = %{version}-%{release}
 # Composer
 Provides:      php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
@@ -107,8 +105,7 @@ cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
 /**
  * Autoloader for %{name} and its' dependencies
- *
- * Created by %{name}-%{version}-%{release}
+ * (created by %{name}-%{version}-%{release}).
  *
  * @return \Symfony\Component\ClassLoader\ClassLoader
  */
@@ -170,6 +167,10 @@ install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 
 
 %changelog
+* Wed Jan 20 2016 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.4.0-1
+- Updated to 0.4.0 (RHBZ #1274939)
+- Removed php-json dependency
+
 * Sun Oct 11 2015 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.3.2-1
 - Updated to 0.3.2 (RHBZ #1268709)
 
