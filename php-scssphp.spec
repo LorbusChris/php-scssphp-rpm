@@ -12,23 +12,23 @@
 
 %global github_owner     leafo
 %global github_name      scssphp
-%global github_version   0.4.0
-%global github_commit    78a6f27aa4eaf70bb3ff4d13b639bab71fdaf47a
+%global github_version   0.6.5
+%global github_commit    0649d38dfef6808be1a89040a3312e8bda0b3aed
 
 %global composer_vendor  leafo
 %global composer_project scssphp
 
-# "php": ">=5.3.0"
-%global php_min_ver      5.3.0
+# "php": ">=5.4.0"
+%global php_min_ver 5.4.0
 
 # Build using "--without tests" to disable tests
-%global with_tests       0%{!?_without_tests:1}
+%global with_tests 0%{!?_without_tests:1}
 
 %{!?phpdir:  %global phpdir  %{_datadir}/php}
 
 Name:          php-%{github_name}
 Version:       %{github_version}
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       A compiler for SCSS written in PHP
 
 Group:         Development/Libraries
@@ -40,9 +40,6 @@ URL:           http://leafo.github.io/scssphp
 Source0:       %{name}-%{github_version}-%{github_commit}.tar.gz
 Source1:       %{name}-get-source.sh
 
-# Pre-0.1.0 compat
-Patch0:        %{name}-pre-0-1-0-compat.patch
-
 BuildArch:     noarch
 # Library version check
 BuildRequires: php-cli
@@ -51,11 +48,12 @@ BuildRequires: php-cli
 ## composer.json
 BuildRequires: php(language) >= %{php_min_ver}
 BuildRequires: php-composer(phpunit/phpunit)
-## phpcompatinfo (computed from version 0.4.0)
+## phpcompatinfo (computed from version 0.6.5)
 BuildRequires: php-ctype
 BuildRequires: php-date
 BuildRequires: php-mbstring
 BuildRequires: php-pcre
+BuildRequires: php-spl
 ## Autoloader
 BuildRequires: php-composer(symfony/class-loader)
 %endif
@@ -63,11 +61,12 @@ BuildRequires: php-composer(symfony/class-loader)
 Requires:      php-cli
 # composer.json
 Requires:      php(language) >= %{php_min_ver}
-# phpcompatinfo (computed from version 0.4.0)
+# phpcompatinfo (computed from version 0.6.5)
 Requires:      php-ctype
 Requires:      php-date
 Requires:      php-mbstring
 Requires:      php-pcre
+Requires:      php-spl
 # Autoloader
 Requires:      php-composer(symfony/class-loader)
 
@@ -92,9 +91,6 @@ syntax.
 
 %prep
 %setup -qn %{github_name}-%{github_commit}
-
-: Lib pre-0.1.0 compat
-%patch0 -p1
 
 : Bin
 sed "/scss.inc.php/s#.*#require_once '%{phpdir}/Leafo/ScssPhp/autoload.php';#" \
@@ -134,19 +130,19 @@ AUTOLOAD
 mkdir -p %{buildroot}%{phpdir}/Leafo/ScssPhp
 cp -pr src/* %{buildroot}%{phpdir}/Leafo/ScssPhp/
 
-: Lib pre-0.1.0 compat
-mkdir -p %{buildroot}%{phpdir}/%{github_name}
-cp -p classmap.php %{buildroot}%{phpdir}/%{github_name}/scss.inc.php
-
 : Bin
 mkdir -p %{buildroot}%{_bindir}
 install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 
 
 %check
-: Library version check
-%{_bindir}/php -r 'require_once "%{buildroot}%{phpdir}/Leafo/ScssPhp/autoload.php";
-    exit(version_compare("%{version}", ltrim(\Leafo\ScssPhp\Version::VERSION, "v"), "=") ? 0 : 1);'
+: Library version value and autoloader check
+%{_bindir}/php -r '
+    require_once "%{buildroot}%{phpdir}/Leafo/ScssPhp/autoload.php";
+    $version = ltrim(\Leafo\ScssPhp\Version::VERSION, "v");
+    echo "Version $version (expected %{version})\n";
+    exit(version_compare("%{version}", "$version", "=") ? 0 : 1);
+'
 
 %if %{with_tests}
 %{_bindir}/phpunit --verbose \
@@ -159,14 +155,17 @@ install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 %files
 %{!?_licensedir:%global license %%doc}
 %license LICENSE.md
-%doc README.md
 %doc composer.json
-%{phpdir}/%{github_name}/scss.inc.php
+%doc README.md
 %{phpdir}/Leafo/ScssPhp
 %{_bindir}/pscss
 
 
 %changelog
+* Sat Jul 23 2016 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.6.5-1
+- Updated to 0.6.5 (RHBZ #1347068)
+- Dropped pre-0.1.0 compat
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
