@@ -12,8 +12,8 @@
 
 %global github_owner     leafo
 %global github_name      scssphp
-%global github_version   0.6.5
-%global github_commit    0649d38dfef6808be1a89040a3312e8bda0b3aed
+%global github_version   0.6.6
+%global github_commit    6fdfe19d2b13a3f12ba0792227f0718809ce4e4d
 
 %global composer_vendor  leafo
 %global composer_project scssphp
@@ -48,12 +48,11 @@ BuildRequires: php-cli
 ## composer.json
 BuildRequires: php(language) >= %{php_min_ver}
 BuildRequires: php-composer(phpunit/phpunit)
-## phpcompatinfo (computed from version 0.6.5)
+## phpcompatinfo (computed from version 0.6.6)
 BuildRequires: php-ctype
 BuildRequires: php-date
 BuildRequires: php-mbstring
 BuildRequires: php-pcre
-BuildRequires: php-spl
 ## Autoloader
 BuildRequires: php-composer(symfony/class-loader)
 %endif
@@ -61,12 +60,11 @@ BuildRequires: php-composer(symfony/class-loader)
 Requires:      php-cli
 # composer.json
 Requires:      php(language) >= %{php_min_ver}
-# phpcompatinfo (computed from version 0.6.5)
+# phpcompatinfo (computed from version 0.6.6)
 Requires:      php-ctype
 Requires:      php-date
 Requires:      php-mbstring
 Requires:      php-pcre
-Requires:      php-spl
 # Autoloader
 Requires:      php-composer(symfony/class-loader)
 
@@ -162,6 +160,9 @@ install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 
 
 %changelog
+* Sun Sep 25 2016 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.6.6-1
+- Updated to 0.6.6 (RHBZ #1376293)
+
 * Sat Jul 23 2016 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.6.5-1
 - Updated to 0.6.5 (RHBZ #1347068)
 - Dropped pre-0.1.0 compat
