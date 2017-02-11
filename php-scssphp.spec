@@ -28,7 +28,7 @@
 
 Name:          php-%{github_name}
 Version:       %{github_version}
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       A compiler for SCSS written in PHP
 
 Group:         Development/Libraries
@@ -160,6 +160,9 @@ install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 
 
 %changelog
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.6-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Sun Sep 25 2016 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.6.6-1
 - Updated to 0.6.6 (RHBZ #1376293)
 
