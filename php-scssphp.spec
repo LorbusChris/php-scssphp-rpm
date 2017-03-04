@@ -1,7 +1,7 @@
 #
 # Fedora spec file for php-scssphp
 #
-# Copyright (c) 2012-2016 Shawn Iwinski <shawn.iwinski@gmail.com>
+# Copyright (c) 2012-2017 Shawn Iwinski <shawn.iwinski@gmail.com>
 #                         Remi Collet <remi@fedoraproject.org>
 #
 # License: MIT
@@ -12,8 +12,8 @@
 
 %global github_owner     leafo
 %global github_name      scssphp
-%global github_version   0.6.6
-%global github_commit    6fdfe19d2b13a3f12ba0792227f0718809ce4e4d
+%global github_version   0.6.7
+%global github_commit    562213cd803e42ea53b0735554794c4022d8db89
 
 %global composer_vendor  leafo
 %global composer_project scssphp
@@ -28,7 +28,7 @@
 
 Name:          php-%{github_name}
 Version:       %{github_version}
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       A compiler for SCSS written in PHP
 
 Group:         Development/Libraries
@@ -48,25 +48,25 @@ BuildRequires: php-cli
 ## composer.json
 BuildRequires: php(language) >= %{php_min_ver}
 BuildRequires: php-composer(phpunit/phpunit)
-## phpcompatinfo (computed from version 0.6.6)
+## phpcompatinfo (computed from version 0.6.7)
 BuildRequires: php-ctype
 BuildRequires: php-date
 BuildRequires: php-mbstring
 BuildRequires: php-pcre
 ## Autoloader
-BuildRequires: php-composer(symfony/class-loader)
+BuildRequires: php-composer(fedora/autoloader)
 %endif
 
 Requires:      php-cli
 # composer.json
 Requires:      php(language) >= %{php_min_ver}
-# phpcompatinfo (computed from version 0.6.6)
+# phpcompatinfo (computed from version 0.6.7)
 Requires:      php-ctype
 Requires:      php-date
 Requires:      php-mbstring
 Requires:      php-pcre
 # Autoloader
-Requires:      php-composer(symfony/class-loader)
+Requires:      php-composer(fedora/autoloader)
 
 # Standard "php-{COMPOSER_VENDOR}-{COMPOSER_PROJECT}" naming
 Provides:      php-%{composer_vendor}-%{composer_project}           = %{version}-%{release}
@@ -86,41 +86,29 @@ terminal.
 scssphp implements SCSS. It does not implement the SASS syntax, only the SCSS
 syntax.
 
+Autoloader: %{phpdir}/Leafo/ScssPhp/autoload.php
+
 
 %prep
 %setup -qn %{github_name}-%{github_commit}
 
-: Bin
+: Adjust bin autoload require
 sed "/scss.inc.php/s#.*#require_once '%{phpdir}/Leafo/ScssPhp/autoload.php';#" \
     -i bin/pscss
 
+
+%build
 : Create autoloader
 cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
 /**
  * Autoloader for %{name} and its' dependencies
  * (created by %{name}-%{version}-%{release}).
- *
- * @return \Symfony\Component\ClassLoader\ClassLoader
  */
+require_once '%{phpdir}/Fedora/Autoloader/autoload.php';
 
-if (!isset($fedoraClassLoader) || !($fedoraClassLoader instanceof \Symfony\Component\ClassLoader\ClassLoader)) {
-    if (!class_exists('Symfony\\Component\\ClassLoader\\ClassLoader', false)) {
-        require_once '%{phpdir}/Symfony/Component/ClassLoader/ClassLoader.php';
-    }
-
-    $fedoraClassLoader = new \Symfony\Component\ClassLoader\ClassLoader();
-    $fedoraClassLoader->register();
-}
-
-$fedoraClassLoader->addPrefix('Leafo\\ScssPhp\\', dirname(dirname(__DIR__)));
-
-return $fedoraClassLoader;
+\Fedora\Autoloader\Autoload::addPsr4('Leafo\\ScssPhp\\', __DIR__);
 AUTOLOAD
-
-
-%build
-# Empty build section, nothing to build
 
 
 %install
@@ -143,8 +131,19 @@ install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 '
 
 %if %{with_tests}
-%{_bindir}/phpunit --verbose \
-    --bootstrap %{buildroot}%{phpdir}/Leafo/ScssPhp/autoload.php
+BOOTSTRAP=%{buildroot}%{phpdir}/Leafo/ScssPhp/autoload.php
+
+: Upstream tests
+%{_bindir}/phpunit --verbose --bootstrap $BOOTSTRAP
+
+: Upstream tests with SCLs if available
+SCL_RETURN_CODE=0
+for SCL in %{?rhel:php55} php56 php70 php71; do
+    if which $SCL; then
+        $SCL %{_bindir}/phpunit --verbose --bootstrap $BOOTSTRAP || SCL_RETURN_CODE=1
+    fi
+done
+exit $SCL_RETURN_CODE
 %else
 : Tests skipped
 %endif
@@ -160,6 +159,11 @@ install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 
 
 %changelog
+* Sat Mar 04 2017 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.6.7-1
+- Updated to 0.6.7 (RHBZ #1426927)
+- Switch autoloader to php-composer(fedora/autoloader)
+- Test with SCLs if available
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.6-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
