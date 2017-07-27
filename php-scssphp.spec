@@ -28,7 +28,7 @@
 
 Name:          php-%{github_name}
 Version:       %{github_version}
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       A compiler for SCSS written in PHP
 
 Group:         Development/Libraries
@@ -159,6 +159,9 @@ exit $SCL_RETURN_CODE
 
 
 %changelog
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.7-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Sat Mar 04 2017 Shawn Iwinski <shawn.iwinski@gmail.com> - 0.6.7-1
 - Updated to 0.6.7 (RHBZ #1426927)
 - Switch autoloader to php-composer(fedora/autoloader)
