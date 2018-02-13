@@ -1,8 +1,9 @@
 #
 # Fedora spec file for php-scssphp
 #
-# Copyright (c) 2012-2017 Shawn Iwinski <shawn.iwinski@gmail.com>
+# Copyright (c) 2012-2018 Shawn Iwinski <shawn.iwinski@gmail.com>
 #                         Remi Collet <remi@fedoraproject.org>
+#                         Christian Glombek <christian.glombek@rwth-aachen.de>
 #
 # License: MIT
 # http://opensource.org/licenses/MIT
@@ -12,8 +13,8 @@
 
 %global github_owner     leafo
 %global github_name      scssphp
-%global github_version   0.6.7
-%global github_commit    562213cd803e42ea53b0735554794c4022d8db89
+%global github_version   0.7.5
+%global github_commit    8b538d828bbb75276974605c4a1a435e939da74e
 
 %global composer_vendor  leafo
 %global composer_project scssphp
@@ -28,10 +29,8 @@
 
 Name:          php-%{github_name}
 Version:       %{github_version}
-Release:       3%{?dist}
+Release:       1%{?dist}
 Summary:       A compiler for SCSS written in PHP
-
-Group:         Development/Libraries
 License:       MIT
 URL:           http://leafo.github.io/scssphp
 
@@ -48,6 +47,8 @@ BuildRequires: php-cli
 ## composer.json
 BuildRequires: php(language) >= %{php_min_ver}
 BuildRequires: php-composer(phpunit/phpunit)
+BuildRequires: php-composer(squizlabs/php_codesniffer)
+
 ## phpcompatinfo (computed from version 0.6.7)
 BuildRequires: php-ctype
 BuildRequires: php-date
@@ -134,6 +135,8 @@ install -pm 0755 bin/pscss %{buildroot}%{_bindir}/
 BOOTSTRAP=%{buildroot}%{phpdir}/Leafo/ScssPhp/autoload.php
 
 : Upstream tests
+# Upstream codestyle tests fail with warnings
+#%%{_bindir}/phpcs --standard=PSR2 %{buildroot}%{phpdir}/Leafo/ScssPhp %{buildroot}%{_bindir} tests example
 %{_bindir}/phpunit --verbose --bootstrap $BOOTSTRAP
 
 : Upstream tests with SCLs if available
@@ -159,6 +162,10 @@ exit $SCL_RETURN_CODE
 
 
 %changelog
+* Tue Feb 13 2018 Christian Glombek <christian.glombek@rwth-aachen.de> - 0.7.5-1
+- Updated to 0.7.5
+- Use php_condesniffer for testing
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.7-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
